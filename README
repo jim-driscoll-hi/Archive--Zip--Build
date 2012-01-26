@@ -1,0 +1,4 @@
+Archive::Zip::Build
+
+A module for creating (writing) zip data, in stages. For more information,
+please see the POD documentation in the module itself.
