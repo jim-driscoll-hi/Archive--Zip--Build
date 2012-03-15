@@ -3,7 +3,7 @@ use strict;
 use warnings;
 our $DEBUG = 0;
 
-# Copyright (c) 2011, Heart Internet Ltd
+# Copyright (c) 2012, Heart Internet Ltd
 # All rights reserved.
 # 
 # Redistribution and use in source and binary forms, with or without
@@ -237,7 +237,7 @@ sub new {
   # This SHOULD be 63, but it seems to be 20 everywhere.
   $self->{spec_version} = $self->{zip64} ?
     45 : # appnote v4.5 = zip64 support
-    21 ; # appnote v2.1 = deflate64
+    20 ; # appnote v2.0 = common (old) version
 
   return bless($self, $class);
 }
