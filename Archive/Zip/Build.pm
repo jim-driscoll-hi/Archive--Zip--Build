@@ -3,7 +3,7 @@ use strict;
 use warnings;
 our $DEBUG = 0;
 
-use version; our $VERSION = version->declare("v0.1.0");
+use version; our $VERSION = version->declare("v0.1.1");
 
 # Copyright (c) 2012, Heart Internet Ltd
 # All rights reserved.

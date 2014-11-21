@@ -1,5 +1,5 @@
 Name: perl-Archive-Zip-Build
-Version: 0.1.0
+Version: 0.1.1
 Release: 1
 License: BSD
 Summary: Common libraries with unrestricted internal distribution
@@ -26,6 +26,8 @@ install Archive/Zip/*.pm $RPM_BUILD_ROOT/%{perl_vendorlib}/Archive/Zip/
 %{perl_vendorlib}/Archive/Zip/*.pm
 
 %changelog
+* Fri Nov 21 2014 Jim Driscoll <jim.driscoll@heartinternet.co.uk> 0.1.1-1
+- Trivial debugging improvements.
 * Thu Apr 17 2014 Jim Driscoll <jim.driscoll@heartinternet.co.uk> 0.1.0-1
 - Initial RPM
 
