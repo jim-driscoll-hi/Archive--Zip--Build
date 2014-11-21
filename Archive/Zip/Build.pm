@@ -31,6 +31,7 @@ use version; our $VERSION = version->declare("v0.1.0");
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 use Compress::Zlib;
+use Carp;
 
 =head1 NAME
 
@@ -215,7 +216,7 @@ Options are:
 
 =item no_zip64
 
-Disable zip64 support. This will result in a die() if zip64 is needed,
+Disable zip64 support. This will result in a confess() if zip64 is needed,
 so please only set this for contexts where you know the result will be
 well under 2GB (eg. < 100MB) and you need the compatibility.
 
@@ -398,7 +399,7 @@ sub print_item {
   my ($self, %options) = @_;
   if(exists $options{Name}) {
     if($options{Name}=~m#^\.{0,2}/# or $options{Name}=~m#/\.\./#) {
-      die "File name '$options{Name}' must be relative and fully contained to be valid in a zip file";
+      confess "File name '$options{Name}' must be relative and fully contained to be valid in a zip file";
     }
   }
   $options{content} = "" unless defined $options{content};
@@ -419,7 +420,7 @@ sub print_item {
     ($uncompressed_size > 0xef_ff_ff_ff or $initial_offset > 0xef_ff_ff_ff);
 
   if($zip64_needed and not $self->{zip64}) {
-    die "Zip64 support is needed to do this";
+    confess "Zip64 support is needed to do this";
   }
 
   my $compression_method_n;
@@ -469,7 +470,7 @@ sub print_item {
     $compression_method_n = 8;
   } else {
     # Anything here MIGHT need to pre-calculate its value to set crc32, etc.
-    die "Unknown method: '$options{method}'";
+    confess "Unknown method: '$options{method}'";
   }
   my ($dos_date, $dos_time) = _ts_to_dos_d_t($options{Time});
 
@@ -544,7 +545,7 @@ sub print_item {
       -Bufsize => $block_size,
     );
     if($status) {
-      die "Deflate error: $status";
+      confess "Deflate error: $status";
     }
     my $c;
     my $read_fh;
@@ -573,14 +574,14 @@ sub print_item {
       $crc32 = _crc32($c, $crc32);
       ($out, $status) = $d->deflate($c);
       if($status) {
-        die "Deflate error: $status ".$d->msg;
+        confess "Deflate error: $status ".$d->msg;
       }
       $compressed_size+=length($out);
       $self->_print($out);
     }
     ($out, $status) = $d->flush() ;
     if($status) {
-      die "Deflate error: $status";
+      confess "Deflate error: $status";
     }
     $compressed_size+=length($out);
     $self->_print($out);
@@ -603,7 +604,7 @@ sub print_item {
     $self->_print($options{content});
     # No need for a data descriptor.
   } else {
-    die;
+    confess;
   }
 
   if($bit_flag & $SIZE_IN_DATA_DESCRIPTOR) {
